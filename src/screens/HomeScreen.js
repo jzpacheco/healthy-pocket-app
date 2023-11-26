@@ -1,12 +1,17 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, TouchableOpacity } from "react-native";
 import { TransactionProvider, useTransaction } from "../context/TransactionContext";
 import { FlatList } from "react-native-gesture-handler";
+import { withNavigation } from "react-navigation";
 
 
 
-export default function HomeScreen(props) {
+ function HomeScreen(props) {
     const { transactions } = useTransaction();
+
+    const handleEditTransaction = (id) => {
+        props.navigation.navigate("EditTransaction", { transactionId: id })
+    }
 
     const calculateSummary = () => {
         let totalBalance = 0
@@ -42,17 +47,23 @@ export default function HomeScreen(props) {
             <Text>Receita: R${totalIncome}</Text>
             <FlatList
                 data={transactions}
-                keyExtractor={(item, index) => index.toString()}
+                keyExtractor={(item, index) => item.id.toString()}
                 renderItem={({ item }) => (
-                    <View>
-                        <Text>Nome: {item.name}</Text>
-                        <Text>Valor: {item.value}</Text>
-                        <Text>Tipo: {item.type}</Text>
-                        <Text>Recorrente: {item.recurrent}</Text>
-                    </View>
+                    <TouchableOpacity onPress={() => handleEditTransaction(item.id)}>
+                        <View>
+                            <Text>Nome: {item.id}</Text>
+                            <Text>Nome: {item.name}</Text>
+                            <Text>Valor: {item.value}</Text>
+                            <Text>Tipo: {item.type}</Text>
+                            <Text>Categoria: {item.category}</Text>
+                            <Text>Recorrente: {item.recurrent}</Text>
+                        </View>
+                    </TouchableOpacity>
                 )}
             />
         </View>
     )
 
 }
+
+export default withNavigation(HomeScreen)
