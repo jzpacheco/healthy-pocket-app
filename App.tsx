@@ -13,6 +13,7 @@ import { createStackNavigator } from 'react-navigation-stack';
 import HomeScreen from './src/screens/HomeScreen';
 import AnalyticsScreen from './src/screens/AnalyticsScreen';
 import TransactionScreen from './src/screens/TransactionScreen';
+import { TransactionProvider } from './src/context/TransactionContext';
 
 
 const navigator = createStackNavigator(
@@ -29,8 +30,14 @@ const navigator = createStackNavigator(
 }
 )
 
+const AppContainer = createAppContainer(navigator)
 
+const App = () => {
+  return(
+    <TransactionProvider>
+      <AppContainer />
+    </TransactionProvider>
+  )
+}
 
-
-
-export default createAppContainer(navigator);
+export default App;
