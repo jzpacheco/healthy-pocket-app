@@ -1,17 +1,16 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, Button } from "react-native";
-import { TextInput } from "react-native-gesture-handler";
+import { View, Text, StyleSheet, Button, TextInput } from "react-native";
 import { Picker } from "@react-native-picker/picker";
-import CurrencyInput from 'react-native-currency-input'
+import CurrencyInput from 'react-native-currency-input';
 import { useTransaction } from "../context/TransactionContext";
 import { showToast } from "../components/Toast";
-import uuid from 'uuid-random'
+import uuid from 'uuid-random';
 
 export default function TransactionScreen(props) {
-    const { addTransaction } = useTransaction()
-    const [inputName, setInputName] = useState('')
-    const [inputValue, setInputValue] = useState(0)
-    const [transactionType, setTransactionType] = useState('')
+    const { addTransaction } = useTransaction();
+    const [inputName, setInputName] = useState('');
+    const [inputValue, setInputValue] = useState(0);
+    const [transactionType, setTransactionType] = useState('');
     const [recurrent, setRecurrent] = useState('');
     const [category, setCategory] = useState('');
 
@@ -31,11 +30,11 @@ export default function TransactionScreen(props) {
                 type: transactionType,
                 category: category,
                 recurrent: recurrent
-            }
+            };
 
-            addTransaction(transaction)
+            addTransaction(transaction);
 
-            showToast('success', 'Transação salva!', '')
+            showToast('success', 'Transação salva!', '');
 
             setInputName('');
             setInputValue(0);
@@ -43,17 +42,17 @@ export default function TransactionScreen(props) {
             setRecurrent('');
             setCategory('');
         } else {
-            showToast('error','Erro','Preencha todos os campos')
+            showToast('error', 'Erro', 'Preencha todos os campos');
         }
     }
 
     return (
-        <View  >
-            <TextInput style={styles.input}
+        <View style={styles.container}>
+            <TextInput
+                style={styles.input}
                 placeholder="Nome"
                 value={inputName}
                 onChangeText={(text) => setInputName(text)}
-
             />
 
             <CurrencyInput
@@ -64,9 +63,10 @@ export default function TransactionScreen(props) {
                 delimiter="."
                 separator=","
                 precision={2}
-
+                style={styles.input}
             />
             <Picker
+                style={styles.input}
                 mode='dropdown'
                 selectedValue={transactionType}
                 onValueChange={(itemValue, itemIndex) => setTransactionType(itemValue)}
@@ -76,6 +76,7 @@ export default function TransactionScreen(props) {
                 <Picker.Item label="Despesa" value="DESPESA" />
             </Picker>
             <Picker
+                style={styles.input}
                 mode="dropdown"
                 selectedValue={category}
                 onValueChange={(itemValue, itemIndex) => setCategory(itemValue)}
@@ -87,6 +88,7 @@ export default function TransactionScreen(props) {
             </Picker>
 
             <Picker
+                style={styles.input}
                 mode='dropdown'
                 selectedValue={recurrent}
                 onValueChange={(itemValue, itemIndex) => setRecurrent(itemValue)}
@@ -96,22 +98,28 @@ export default function TransactionScreen(props) {
                 <Picker.Item label="Sim" value="SIM" />
             </Picker>
 
-            <Button title="Salvar" onPress={handleSave}
-            />
+            <Button title="Salvar" onPress={handleSave} color={styles.button.color} />
         </View>
-    )
+    );
 }
 
-
 const styles = StyleSheet.create({
-    inputContainer: {
-        flexDirection: 'row',
-        alignItems: 'center'
+    container: {
+        flex: 1,
+        justifyContent: 'center',
+        padding: 16,
+        backgroundColor: '#ecf0f1',
     },
-
     input: {
-        borderColor: 'gray',
+        height: 40,
+        borderColor: '#B0BEC5',
         borderWidth: 1,
         borderRadius: 8,
-    }
-})
+        marginBottom: 16,
+        paddingLeft: 8,
+        backgroundColor: "#FFFFFF",
+    },
+    button: {
+        color: "#4CAF50", // Verde para representar saúde financeira
+    },
+});
